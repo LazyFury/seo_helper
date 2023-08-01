@@ -41,7 +41,7 @@ impl Spider {
             "request on :{}  【index】:{} 【count】: {:?}",
             task.url, i, len
         );
-        let urls = task.crawl(&self.client).expect("执行任务出错");
+        let urls = task.crawl(&self.client).unwrap();
         for url in urls {
             if self.has_task(&url) {
                 continue;

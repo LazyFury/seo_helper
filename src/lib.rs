@@ -12,4 +12,9 @@ mod tests {
         )
         .crawl()
     }
+
+    #[test]
+    fn not_work_url() {
+        Spider::build("https://xxx.com/".to_string()).crawl()
+    }
 }
