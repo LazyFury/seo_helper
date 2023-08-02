@@ -11,6 +11,9 @@ members = ["cli", "server"]
 scraper = "0.17.1"
 url = "*"
 regex = "*"
+chrono = "*"
+
+
 [dependencies.reqwest]
 version = "*"
 features = ["blocking"]

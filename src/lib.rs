@@ -13,10 +13,11 @@ mod tests {
                 .to_string(),
         )
         .crawl()
+        .gen_xml_from_tasks();
     }
 
     #[test]
     fn not_work_url() {
-        Spider::build("https://xxx.com/".to_string()).crawl()
+        Spider::build("https://xxx.com/".to_string()).crawl();
     }
 }

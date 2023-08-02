@@ -1,6 +1,11 @@
-use std::time::Duration;
+use std::{fs::File, io::Write, time::Duration};
 
-use super::task::Task;
+use chrono::Utc;
+
+use super::{
+    task::Task,
+    xml::{Changefreq, Url, Xml},
+};
 #[derive(Debug)]
 pub struct Spider {
     pub tasks: Vec<Task>,
@@ -39,14 +44,16 @@ impl Spider {
     }
 
     ///带默认参数的爬虫
-    pub fn crawl(&mut self) {
-        return self.crawl_self(0);
+    pub fn crawl(&mut self) -> &Spider {
+        self.crawl_self(0);
+        self
     }
 
     ///递归爬取 分析url 添加到任务
     fn crawl_self(&mut self, i: usize) {
         let len = self.tasks.len();
         if i >= len {
+            self.gen_xml_from_tasks();
             return;
         }
         let task = self.tasks.get_mut(i).unwrap();
@@ -76,5 +83,23 @@ impl Spider {
             }
         }
         false
+    }
+
+    pub fn gen_xml_from_tasks(&self) {
+        if self.tasks.len() <= 0 {
+            return;
+        }
+        let mut xml = Xml::new();
+        for task in &self.tasks {
+            xml.add_url(Url {
+                loc: task.url.clone(),
+                lastmod: Some(Utc::now()),
+                changefreq: Some(Changefreq::Daily),
+                priority: Some(0.3),
+            });
+        }
+
+        let mut file = File::create("sitemap.xml").unwrap();
+        writeln!(file, "{}", xml.to_string()).unwrap();
     }
 }
