@@ -1,3 +1,5 @@
+#![crate_name = "seo_helper"]
+
 pub mod sitemap;
 
 #[cfg(test)]

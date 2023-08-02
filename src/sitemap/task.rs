@@ -1,10 +1,13 @@
 use scraper::Selector;
 
+#[derive(Debug)]
 pub enum Progress {
     WAIT = 0,
     REQ = 1,
     DONE = 2,
 }
+
+#[derive(Debug)]
 pub struct Task {
     pub url: String,
     pub progress: Progress,
