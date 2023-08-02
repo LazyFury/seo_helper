@@ -40,18 +40,7 @@ pub struct Xml {
 
 impl ToString for Xml {
     fn to_string(&self) -> String {
-        Box::leak(
-            format!(
-                r#"
-            {}
-            {}
-            "#,
-                self.header(),
-                self.urlset()
-            )
-            .into_boxed_str(),
-        )
-        .to_string()
+        Box::leak(format!(r#"{}{}"#, self.header(), self.urlset()).into_boxed_str()).to_string()
     }
 }
 
@@ -68,16 +57,12 @@ impl Xml {
     pub fn add_url(&mut self, url: Url) {
         self.urls.push(url);
     }
-
     pub fn header(&self) -> &'static str {
-        Box::leak(
-            format!(
-                r#"
-<?xml version="{}" encoding="{}"?>"#,
-                self.version, self.encoding
-            )
-            .into_boxed_str(),
-        )
+        let str = format!(
+            "<?xml version=\"{}\" encoding=\"{}\"?>",
+            self.version, self.encoding
+        );
+        Box::leak(str.into_boxed_str())
     }
 
     pub fn urlset(&self) -> &'static str {
@@ -87,10 +72,7 @@ impl Xml {
         }
         Box::leak(
             format!(
-                r#"
-<urlset xmlns="{}">
-{}
-</urlset>"#,
+                "<urlset xmlns=\"{}\">\n{}\n</urlset>",
                 self.urlset_namespace,
                 urls.join("\n")
             )
@@ -117,7 +99,7 @@ impl Xml {
         Box::leak(
             format!(
                 r#"<url>
-    <loc>{}</loc>
+    <loc><![CDATA[{}]]></loc>
     <lastmod>{}</lastmod>
     <changefreq>{}</changefreq>
     <priority>{}</priority>

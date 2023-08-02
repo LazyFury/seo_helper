@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write, time::Duration};
+use std::{fmt::format, fs::File, io::Write, time::Duration};
 
 use chrono::Utc;
 
@@ -91,15 +91,17 @@ impl Spider {
         }
         let mut xml = Xml::new();
         for task in &self.tasks {
+            let url = task.url.clone();
+            let url = url::Url::parse(&url).unwrap();
             xml.add_url(Url {
-                loc: task.url.clone(),
+                loc: url.to_string(),
                 lastmod: Some(Utc::now()),
                 changefreq: Some(Changefreq::Daily),
                 priority: Some(0.3),
             });
         }
 
-        let mut file = File::create("sitemap.xml").unwrap();
+        let mut file = File::create("cache/sitemap.xml").unwrap();
         writeln!(file, "{}", xml.to_string()).unwrap();
     }
 }

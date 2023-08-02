@@ -12,7 +12,7 @@ scraper = "0.17.1"
 url = "*"
 regex = "*"
 chrono = "*"
-
+urlencoding = "*"
 
 [dependencies.reqwest]
 version = "*"
