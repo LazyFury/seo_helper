@@ -1,4 +1,4 @@
-use std::{fmt::format, fs::File, io::Write, time::Duration};
+use std::{fs::File, io::Write, time::Duration};
 
 use chrono::Utc;
 
