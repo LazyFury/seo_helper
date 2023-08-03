@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write, time::Duration};
+use std::{fs::File, io::Write, path::PathBuf, time::Duration};
 
 use chrono::Utc;
 
@@ -53,7 +53,6 @@ impl Spider {
     fn crawl_self(&mut self, i: usize) {
         let len = self.tasks.len();
         if i >= len {
-            self.gen_xml_from_tasks();
             return;
         }
         let task = self.tasks.get_mut(i).unwrap();
@@ -62,7 +61,8 @@ impl Spider {
             "request on :{}  【index】:{} 【count】: {:?}",
             task.url, i, len
         );
-        let urls = task.crawl(&self.client).unwrap();
+        let urls = task.crawl(&self.client).unwrap_or(vec![]);
+
         for url in urls {
             if self.has_task(&url) {
                 continue;
@@ -85,7 +85,7 @@ impl Spider {
         false
     }
 
-    pub fn gen_xml_from_tasks(&self) {
+    pub fn gen_xml_from_tasks(&self, path: PathBuf) {
         if self.tasks.len() <= 0 {
             return;
         }
@@ -101,7 +101,7 @@ impl Spider {
             });
         }
 
-        let mut file = File::create("cache/sitemap.xml").unwrap();
+        let mut file = File::create(path).expect("文件路径不正确");
         writeln!(file, "{}", xml.to_string()).unwrap();
     }
 }

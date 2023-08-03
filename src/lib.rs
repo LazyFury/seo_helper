@@ -13,7 +13,7 @@ mod tests {
                 .to_string(),
         )
         .crawl()
-        .gen_xml_from_tasks();
+        .gen_xml_from_tasks(std::env::current_dir().unwrap().join("cache").join("sitemap.xml"));
     }
 
     #[test]

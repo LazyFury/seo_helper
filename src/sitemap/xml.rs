@@ -72,7 +72,8 @@ impl Xml {
         }
         Box::leak(
             format!(
-                "<urlset xmlns=\"{}\">\n{}\n</urlset>",
+                "
+<urlset xmlns=\"{}\">\n{}\n</urlset>",
                 self.urlset_namespace,
                 urls.join("\n")
             )

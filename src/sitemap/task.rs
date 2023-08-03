@@ -56,7 +56,7 @@ impl Task {
             let url = target_url.join(href).expect("拼接相对路径url出错");
             let url = url.to_string();
             if Task::valide_url(&self.url, &url) {
-                println!("add url:{}", url);
+                // println!("add url:{}", url);
                 urls.push(url.to_string());
             }
         }
